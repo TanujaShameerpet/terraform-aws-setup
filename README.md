@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Terraform configuration sets up an AWS infrastructure with the following components:
+This Terraform configuration sets up the website with the following infrastructure:
 
 - **VPC** with public and private subnets
 - **Internet Gateway** for public subnets
