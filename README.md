@@ -1,4 +1,4 @@
-# Terraform AWS Infrastructure Setup
+ # Terraform AWS Infrastructure Setup
 
 ## Overview
 
@@ -6,11 +6,11 @@ This Terraform configuration sets up an AWS infrastructure with the following co
 
 - **VPC** with public and private subnets
 - **Internet Gateway** for public subnets
-- **NAT Gateway** for private subnet internet access
-- **Route Tables** for proper routing
-- **Security Groups** for ALB and EC2
-- **Application Load Balancer (ALB)** for handling traffic
-- **EC2 Instance** configured with Apache web server
+- **NAT Gateway** for private subnet
+- **Route Tables** for routing between subnets
+- **Security Groups** for ALB and EC2 instances
+- **Application Load Balancer (ALB)** for HTTPS handling traffic
+- **EC2 Instance** configured with Apache web server 
 
 ## Prerequisites
 
@@ -19,74 +19,60 @@ Ensure you have the following installed on your machine:
 - Terraform
 - AWS CLI
 - An AWS account with appropriate permissions
-- SSH key pair configured in AWS for EC2 access
+- AWS Credentials 
 
 ## Configuration
 
-### AWS Provider
+### AWS Credentials
 
-The configuration uses the AWS provider and sets the region:
+Download IAM user or root user credentials and configure your aws credentials in your local
 
-```hcl
-provider "aws" {
-  region = "us-east-1" # Change to your preferred region
-}
+### VPC Setup
+The VPC is created with a CIDR block of 10.0.0.0/16 and named as main-vpc.
 
-Networking
-VPC: Creates a VPC with CIDR 10.0.0.0/16
-Subnets: Two public and two private subnets across different availability zones
-Internet Gateway: Allows public subnet traffic
-NAT Gateway: Allows private subnet instances to access the internet
-Route Tables: Routes traffic correctly between subnets
-Security Groups
-ALB Security Group: Allows HTTP (80) and HTTPS (443) traffic
-EC2 Security Group: Allows traffic from ALB on port 80 and SSH (22) access within the VPC
-Application Load Balancer (ALB)
-ALB routes traffic to a target group attached to an EC2 instance
-Uses a self-signed SSL certificate for HTTPS traffic
-EC2 Instance
-Launches a t2.micro EC2 instance in a private subnet
-Installs and starts Apache web server
-Serves a simple "Hello World" webpage
-Deployment
-Initialize Terraform
-Run the following command to initialize Terraform:
+### Subnets Setup
+Two Public Subnets and Two Private subnets are associate with the main-vpc
+     - Public Subnet 1: 10.0.1.0/24 in us-east-1a
+     - Public Subnet 2: 10.0.2.0/24 in us-east-1b
+     - Private Subnet: 10.0.3.0/24 in us-east-1a
+     - Private Subnet 2: 10.0.4.0/24 in us-east-1
+### Route Tables
+- Public Route Table: Routes traffic to the Internet Gateway.
+- Private Route Table: Routes traffic to ALB through port 80 and with in the VPC through port 22
 
-bash
-Copy
-Edit
-terraform init
-Plan Changes
-To preview changes before applying:
+### Security Groups
+- ALB Security Group: Allows inbound HTTP (80) and HTTPS (443) traffic from all IPs (0.0.0.0/0).
+- EC2 Security Group: Allows inbound HTTP (80) traffic from the ALB and SSH (22) traffic from within the VPC (10.0.0.0/16).
 
-bash
-Copy
-Edit
-terraform plan
-Apply Configuration
-Deploy the resources to AWS:
+### Application Load Balancer
+An Application Load Balancer is created, using the ALB security group and public subnets. It listens for HTTPS traffic on port 443, and forwards the traffic to EC2 instance in private subnet.
 
-bash
-Copy
-Edit
-terraform apply -auto-approve
-Retrieve ALB DNS Name
-After deployment, get the ALB DNS name to access the web application:
+### EC2 Instance
+An EC2 instance is launched in the private subnet associated with EC2 security created as mentioned above, using the t2.micro instance type . Apache web server is installed, and a simple "Hello World" message is served. The EC2 instance is attached to the ALB's target group.
 
-bash
-Copy
-Edit
-terraform output alb_dns_name
-Destroy Resources
-To remove all resources created by Terraform:
+## Outputs
+The configuration outputs the following values:
 
-bash
-Copy
-Edit
-terraform destroy -auto-approve
-Outputs
-ALB DNS Name: Use this to access your web application
-EC2 Private IP: Displays the private IP of the web server instance
-Notes
-Ensure that the SSL certificate ARN is valid in your AWS account
-Modify security groups as needed to restrict access
+ALB DNS Name: The DNS name of the Application Load Balancer to access the web application.
+EC2 Private IP: The private IP address of the EC2 instance.
+
+## Deployment 
+
+``` terraform init ```
+Run the above command to initialize the terraform 
+
+``` terraform plan ```
+Run the plan command to preview the changes before you deploy the resources
+
+``` terraform apply ```
+Run the apply command to deploy the infrastructure
+
+For other terraform commands such ```terraform destroy``` etc refer to https://developer.hashicorp.com/terraform/cli/commands
+
+
+
+
+
+
+
+
