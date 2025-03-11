@@ -64,7 +64,11 @@ ALB DNS Name: The DNS name of the Application Load Balancer to access the web ap
 EC2 Private IP: The private IP address of the EC2 instance.
 
   
-## Output Image
+## Validation 
+
+Use the URL https://sample-alb-968498464.us-east-1.elb.amazonaws.com/ in your preferred browser to call the api. The browser will prompt that the URL is not secure , as we are using self-signed certificate. 
+
+
 <img width="1438" alt="image" src="https://github.com/user-attachments/assets/e2cc8a1e-4ca3-4347-9153-491afa937638" />
 
 
