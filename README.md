@@ -47,6 +47,9 @@ Two Public Subnets and Two Private subnets are associate with the main-vpc
 ### Application Load Balancer
 An Application Load Balancer is created, using the ALB security group and public subnets. It listens for HTTPS traffic on port 443, and forwards the traffic to EC2 instance in private subnet.
 
+### SSL Certificate
+Created self-signed certificate and uploaded it in AWS and 
+
 ### EC2 Instance
 An EC2 instance is launched in the private subnet associated with EC2 security created as mentioned above, using the t2.micro instance type . Apache web server is installed, and a simple "Hello World" message is served. The EC2 instance is attached to the ALB's target group.
 
@@ -55,6 +58,7 @@ The configuration outputs the following values:
 
 ALB DNS Name: The DNS name of the Application Load Balancer to access the web application.
 EC2 Private IP: The private IP address of the EC2 instance.
+
 
 ## Deployment 
 
