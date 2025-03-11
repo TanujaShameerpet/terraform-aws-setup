@@ -20,7 +20,7 @@ Application Load Balancer in public subnet must talk to EC2 in Private Subnet to
 
 Ensure you have the following installed on your machine:
 
-- Terraform
+- Terraform ( Latest Version ) v1.11.1
 - AWS CLI
 - An AWS account with appropriate permissions
 - AWS Credentials 
@@ -60,16 +60,16 @@ An EC2 instance is launched in the private subnet associated with EC2 security c
 ## Outputs
 The configuration outputs the following values:
 
-ALB DNS Name: The DNS name of the Application Load Balancer to access the web application.
-EC2 Private IP: The private IP address of the EC2 instance.
+- ALB DNS Name: The DNS name of the Application Load Balancer to access the web application.
+- EC2 Private IP: The private IP address of the EC2 instance.
 
   
 ## Validation 
 
 Use the URL https://sample-alb-968498464.us-east-1.elb.amazonaws.com/ in your preferred browser to call the api. The browser will prompt that the URL is not secure , as we are using self-signed certificate. 
 
+<img width="1435" alt="image" src="https://github.com/user-attachments/assets/483d23c8-008c-466e-9105-e85567bf169b" />
 
-<img width="1438" alt="image" src="https://github.com/user-attachments/assets/e2cc8a1e-4ca3-4347-9153-491afa937638" />
 
 
 ## Deployment 
