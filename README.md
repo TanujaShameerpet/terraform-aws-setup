@@ -47,9 +47,6 @@ Two Public Subnets and Two Private subnets are associate with the main-vpc
 ### Security Groups
 - ALB Security Group: Allows inbound HTTP (80) and HTTPS (443) traffic from all IPs (0.0.0.0/0).
 - EC2 Security Group: Allows inbound HTTP (80) traffic from the ALB and SSH (22) traffic from within the VPC (10.0.0.0/16).
-  
-### Output Image
-<img width="1438" alt="image" src="https://github.com/user-attachments/assets/e2cc8a1e-4ca3-4347-9153-491afa937638" />
 
 ### Application Load Balancer
 An Application Load Balancer is created, using the ALB security group and public subnets. It listens for HTTPS traffic on port 443, and forwards the traffic to EC2 instance in private subnet.
@@ -65,6 +62,10 @@ The configuration outputs the following values:
 
 ALB DNS Name: The DNS name of the Application Load Balancer to access the web application.
 EC2 Private IP: The private IP address of the EC2 instance.
+
+  
+## Output Image
+<img width="1438" alt="image" src="https://github.com/user-attachments/assets/e2cc8a1e-4ca3-4347-9153-491afa937638" />
 
 
 ## Deployment 
